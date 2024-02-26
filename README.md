@@ -2,6 +2,7 @@
 
 Command line tools for [AWS s3](https://aws.amazon.com/s3/).
 
+<br/>
 
 ![cooper project logo](https://github.com/heuermh/cooper/raw/main/images/cooper-branding.jpg)
 
@@ -11,7 +12,8 @@ https://en.wikipedia.org/wiki/Cooper_(profession)
 
 Primarily a workaround for this issue:
 
-Broken pipe error when piping "s3 ls" output to grep -q ( https://github.com/aws/aws-cli/issues/5899 )
+Broken pipe error when piping "s3 ls" output to grep -q<br/>
+https://github.com/aws/aws-cli/issues/5899
 
 
 ## Hacking cooper
