@@ -30,7 +30,7 @@
     <url>https://github.com/heuermh/cooper/issues</url>
   </issueManagement>
   <properties>
-    <awssdk.version>2.25.30</awssdk.version>
+    <awssdk.version>2.25.38</awssdk.version>
     <jdk.version>11</jdk.version>
     <maven.enforcer.maven-version>[3.1.1,)</maven.enforcer.maven-version>
     <maven.enforcer.jdk-version>[11,)</maven.enforcer.jdk-version>
