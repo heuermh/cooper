@@ -45,6 +45,8 @@ import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
 /**
  * Cooper.
+ *
+ * @author  Michael Heuer
  */
 @Command(
   name = "coop",
@@ -61,15 +63,30 @@ import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 )
 public final class Cooper implements Callable<Integer> {
 
+    @picocli.CommandLine.Option(names = { "--human-readable" })
+    private boolean humanReadable;
+
+    @picocli.CommandLine.Option(names = { "--show-header" })
+    private boolean showHeader;
+
+    @picocli.CommandLine.Option(names = { "--reverse-columns" })
+    private boolean reverseColumns;
+
     @picocli.CommandLine.Option(names = { "--verbose" })
     private boolean verbose;
 
     @picocli.CommandLine.Parameters(index = "0..*", descriptionKey = "uris")
     private List<String> uris;
 
+    /** Logger. */
     static Logger logger;
 
-    static Pattern S3_URI = Pattern.compile("^s3:\\/\\/([a-zA-Z-]+)\\/(.+)$");
+    /** Human readable formatter. */
+    static final HumanReadableFormatter FORMATTER = new HumanReadableFormatter();
+
+    /** s3 bucket and prefix regex pattern. */
+    static final Pattern S3_URI = Pattern.compile("^s3:\\/\\/([a-zA-Z-]+)\\/(.+)$");
+
 
     @Override
     public Integer call() throws Exception {
@@ -77,6 +94,10 @@ public final class Cooper implements Callable<Integer> {
         S3Client s3 = S3Client.builder()
             .region(Region.US_WEST_2)
             .build();
+
+        if (showHeader) {
+            System.out.println(reverseColumns ? "size\turi" : "uri\tsize");
+        }
 
         for (String uri : uris) {
             Matcher m = S3_URI.matcher(uri);
@@ -101,8 +122,11 @@ public final class Cooper implements Callable<Integer> {
                     for (S3Object content : response.contents()) {
 
                         String s3Path = "s3://" + bucket + "/" + content.key();
+
                         if (s3Path.startsWith(uri)) {
-                            System.out.println(s3Path + "\t" + content.size());
+
+                            String size = humanReadable ? FORMATTER.format(content.size()) : String.valueOf(content.size());
+                            System.out.println(reverseColumns ? size + "\t" + s3Path : s3Path + "\t" + size);
                         }
                     }
                 }

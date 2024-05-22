@@ -17,6 +17,8 @@ package com.github.heuermh.cooper;
 
 /**
  * Command line.
+ *
+ * @author  Michael Heuer
  */
 final class CommandLine extends picocli.CommandLine {
 
