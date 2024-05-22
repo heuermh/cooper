@@ -29,7 +29,7 @@ final class HumanReadableFormatter {
     private final DecimalFormat decimalFormat;
 
     /** Multi-byte units, in binary.  See https://en.wikipedia.org/wiki/Byte#Multiple-byte_units.  */
-    static final String[] UNITS = new String[] { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB" };
+    static final String[] UNITS = new String[] { "Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB" };
 
 
     /**
@@ -39,7 +39,7 @@ final class HumanReadableFormatter {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
 
-        decimalFormat = new DecimalFormat("0.##", symbols);
+        decimalFormat = new DecimalFormat("0.#", symbols);
         decimalFormat.setGroupingUsed(false);
     }
 
