@@ -37,7 +37,7 @@ $ export PATH=$PATH:`pwd`/target/appassembler/bin
 ```bash
 $ coop --help
 USAGE
-  coop [-hV] [--verbose] [<uris>...] [COMMAND]
+  coop [-hV] [--human-readable] [--reverse-columns] [--show-header] [--verbose] [<uris>...] [COMMAND]
 
 List s3 paths recursively with content sizes.
 
@@ -49,12 +49,15 @@ E.g.
 
 
 PARAMETERS
-      [<uris>...]   Zero or more s3 URIs.
+      [<uris>...]         Zero or more s3 URIs.
 
 OPTIONS
-      --verbose     Show additional logging messages.
-  -h, --help        Show this help message and exit.
-  -V, --version     Print version information and exit.
+      --human-readable    Format content sizes in multi-byte units, in binary.
+      --show-header       Show column header row in output.
+      --reverse-columns   Reverse the order of output columns.
+      --verbose           Show additional logging messages.
+  -h, --help              Show this help message and exit.
+  -V, --version           Print version information and exit.
 
 COMMANDS
   help                 Display help information about coop.
