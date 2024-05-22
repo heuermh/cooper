@@ -58,5 +58,5 @@ OPTIONS
 
 COMMANDS
   help                 Display help information about coop.
-  generate-completion  List s3 paths recursively with content sizes.
+  generate-completion  Generate bash/zsh completion script for coop.
 ```
