@@ -39,6 +39,14 @@ $ coop --help
 USAGE
   coop [-hV] [--verbose] [<uris>...] [COMMAND]
 
+List s3 paths recursively with content sizes.
+
+E.g.
+   $ cat uris.txt | xargs coop
+   $ coop s3://... | head -n 4
+   $ coop s3://... | grep -m 10 -e '...'
+   $ coop s3://... | cut -f 2 | sort -n -r
+
 
 PARAMETERS
       [<uris>...]   Zero or more s3 URIs.
@@ -49,6 +57,6 @@ OPTIONS
   -V, --version     Print version information and exit.
 
 COMMANDS
-  help                 Display help information about the specified command.
-  generate-completion  Generate bash/zsh completion script for coop.
+  help                 Display help information about coop.
+  generate-completion  List s3 paths recursively with content sizes.
 ```

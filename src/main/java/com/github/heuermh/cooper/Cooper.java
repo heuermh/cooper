@@ -100,8 +100,9 @@ public final class Cooper implements Callable<Integer> {
 
                     for (S3Object content : response.contents()) {
 
-                        if (uri.equals("s3://" + bucket + "/" + content.key())) {
-                            System.out.println(uri + "\t" + content.size());
+                        String s3Path = "s3://" + bucket + "/" + content.key();
+                        if (s3Path.startsWith(uri)) {
+                            System.out.println(s3Path + "\t" + content.size());
                         }
                     }
                 }
