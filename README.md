@@ -52,7 +52,7 @@ PARAMETERS
       [<uris>...]         Zero or more s3 URIs.
 
 OPTIONS
-      --human-readable    Format content sizes in multi-byte units, in binary.
+      --human-readable    Format content sizes in binary multi-byte units.
       --show-header       Show column header row in output.
       --reverse-columns   Reverse the order of output columns.
       --verbose           Show additional logging messages.
