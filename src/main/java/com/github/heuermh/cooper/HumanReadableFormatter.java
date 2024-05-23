@@ -46,11 +46,11 @@ final class HumanReadableFormatter {
 
     /**
      * Format the specified size in bytes to human readable
-     * multi-byte units, in binary.
+     * binary multi-byte units.
      *
      * @param size, size in bytes
      * @return the specified size in bytes formatted to human readable
-     *    multi-byte units, in binary
+     *    binary multi-byte units
      */
     String format(final long size) {
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
