@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.dishevelled</groupId>
     <artifactId>dsh-parent</artifactId>
-    <version>43</version>
+    <version>44</version>
   </parent>
   <groupId>com.github.heuermh.cooper</groupId>
   <artifactId>cooper</artifactId>
@@ -30,11 +30,11 @@
     <url>https://github.com/heuermh/cooper/issues</url>
   </issueManagement>
   <properties>
-    <awssdk.version>2.25.57</awssdk.version>
+    <awssdk.version>2.25.60</awssdk.version>
     <jdk.version>11</jdk.version>
     <maven.enforcer.maven-version>[3.1.1,)</maven.enforcer.maven-version>
     <maven.enforcer.jdk-version>[11,)</maven.enforcer.jdk-version>
-    <picocli.version>4.7.5</picocli.version>
+    <picocli.version>4.7.6</picocli.version>
     <slf4j.version>1.7.36</slf4j.version>
   </properties>
   <dependencyManagement>
