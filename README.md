@@ -37,7 +37,7 @@ $ export PATH=$PATH:`pwd`/target/appassembler/bin
 ```bash
 $ coop --help
 USAGE
-  coop [-hV] [--human-readable] [--reverse-columns] [--show-header] [--verbose] [<uris>...] [COMMAND]
+  coop [-hV] [--human-readable] [--reverse-columns] [--show-header] [--verbose] [--region=<region>] <uris>... [COMMAND]
 
 List s3 paths recursively with content sizes.
 
@@ -49,9 +49,10 @@ E.g.
 
 
 PARAMETERS
-      [<uris>...]         Zero or more s3 URIs.
+      <uris>...           One or more s3 URIs.
 
 OPTIONS
+      --region=<region>   AWS region, default US_WEST_2.
       --human-readable    Format content sizes in binary multi-byte units.
       --show-header       Show column header row in output.
       --reverse-columns   Reverse the order of output columns.

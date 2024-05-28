@@ -30,6 +30,7 @@ import picocli.AutoComplete.GenerateCompletion;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
+import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.ScopeType;
 
 import software.amazon.awssdk.regions.Region;
@@ -63,6 +64,14 @@ import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 )
 public final class Cooper implements Callable<Integer> {
 
+    @picocli.CommandLine.Option(
+        names = { "--region" },
+        type = Region.class,
+        converter = RegionConverter.class,
+        defaultValue = "US_WEST_2"
+    )
+    private Region region;
+
     @picocli.CommandLine.Option(names = { "--human-readable" })
     private boolean humanReadable;
 
@@ -75,7 +84,7 @@ public final class Cooper implements Callable<Integer> {
     @picocli.CommandLine.Option(names = { "--verbose" })
     private boolean verbose;
 
-    @picocli.CommandLine.Parameters(index = "0..*", descriptionKey = "uris")
+    @picocli.CommandLine.Parameters(index = "0..*", arity = "1..*", descriptionKey = "uris")
     private List<String> uris;
 
     /** Logger. */
@@ -92,7 +101,7 @@ public final class Cooper implements Callable<Integer> {
     public Integer call() throws Exception {
 
         S3Client s3 = S3Client.builder()
-            .region(Region.US_WEST_2)
+            .region(region)
             .build();
 
         if (showHeader) {
