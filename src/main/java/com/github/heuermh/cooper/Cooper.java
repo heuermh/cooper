@@ -68,7 +68,7 @@ public final class Cooper implements Callable<Integer> {
         names = { "--region" },
         type = Region.class,
         converter = RegionConverter.class,
-        defaultValue = "US_WEST_2"
+        defaultValue = "us-west-2"
     )
     private Region region;
 
