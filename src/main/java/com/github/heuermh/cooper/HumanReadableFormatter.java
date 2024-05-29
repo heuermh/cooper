@@ -48,11 +48,20 @@ final class HumanReadableFormatter {
      * Format the specified size in bytes to human readable
      * binary multi-byte units.
      *
-     * @param size, size in bytes
+     * @param size, size in bytes, must be at least zero
      * @return the specified size in bytes formatted to human readable
      *    binary multi-byte units
      */
     String format(final long size) {
+        if (size < 0L) {
+            throw new IllegalArgumentException("size must be at least zero");
+        }
+        if (size == 0L) {
+            return "0 Bytes";
+        }
+        if (size == 1L) {
+            return "1 Byte";
+        }
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return decimalFormat.format(size / Math.pow(1024, digitGroups)) + " " + UNITS[digitGroups];
     }
