@@ -161,6 +161,14 @@ public final class Cooper implements Callable<Integer> {
         }
         logger = LoggerFactory.getLogger(Cooper.class);
 
+        // install a signal handler to exit on SIGPIPE
+        sun.misc.Signal.handle(new sun.misc.Signal("PIPE"), new sun.misc.SignalHandler() {
+                @Override
+                public void handle(final sun.misc.Signal signal) {
+                    System.exit(0);
+                }
+            });
+
         System.exit(new CommandLine(new Cooper()).execute(args));
     }
 }
