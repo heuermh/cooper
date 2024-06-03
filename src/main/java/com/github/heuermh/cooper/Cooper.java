@@ -94,7 +94,7 @@ public final class Cooper implements Callable<Integer> {
     static final HumanReadableFormatter FORMATTER = new HumanReadableFormatter();
 
     /** s3 bucket and prefix regex pattern. */
-    static final Pattern S3_URI = Pattern.compile("^s3:\\/\\/([a-zA-Z-]+)\\/(.+)$");
+    static final Pattern S3_URI = Pattern.compile("^s3:\\/\\/([a-zA-Z-]+)\\/*(.*)$");
 
 
     @Override
@@ -116,10 +116,14 @@ public final class Cooper implements Callable<Integer> {
                 
                 logger.info("valid uri={} bucket={} prefix={}", uri, bucket, prefix);
 
-                ListObjectsV2Request request = ListObjectsV2Request.builder()
-                    .bucket(bucket)
-                    .prefix(prefix)
-                    .build();
+                ListObjectsV2Request.Builder requestBuilder = ListObjectsV2Request.builder()
+                    .bucket(bucket);
+
+                if (prefix != null && prefix.trim().length() > 0) {
+                    requestBuilder = requestBuilder.prefix(prefix);
+                }
+
+                ListObjectsV2Request request = requestBuilder.build();
 
                 logger.info("ListObjectsV2 request={}", request.toString());
 
