@@ -10,7 +10,7 @@
   <groupId>com.github.heuermh.cooper</groupId>
   <artifactId>cooper</artifactId>
   <name>cooper</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1</version>
   <description>Cooper.</description>
   <licenses>
     <license>
@@ -23,7 +23,7 @@
     <connection>scm:git:git@github.com:heuermh/cooper.git</connection>
     <developerConnection>scm:git:git@github.com:heuermh/cooper.git</developerConnection>
     <url>git@github.com:heuermh/cooper.git</url>
-    <tag>HEAD</tag>
+    <tag>cooper-0.1</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
