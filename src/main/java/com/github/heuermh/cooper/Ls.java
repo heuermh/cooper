@@ -76,7 +76,7 @@ public final class Ls implements Callable<Integer> {
     private List<String> uris;
 
     /** Logger. */
-    static Logger logger;
+    private Logger logger = LoggerFactory.getLogger(Ls.class);
 
     /** Human readable formatter. */
     static final HumanReadableFormatter FORMATTER = new HumanReadableFormatter();
@@ -151,7 +151,14 @@ public final class Ls implements Callable<Integer> {
         if (Arrays.asList(args).contains("--verbose")) {
             System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
         }
-        logger = LoggerFactory.getLogger(Cooper.class);
+
+        // install a signal handler to exit on SIGPIPE
+        sun.misc.Signal.handle(new sun.misc.Signal("PIPE"), new sun.misc.SignalHandler() {
+                @Override
+                public void handle(final sun.misc.Signal signal) {
+                    System.exit(0);
+                }
+            });
 
         System.exit(new CommandLine(new Ls()).execute(args));
     }

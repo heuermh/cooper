@@ -77,6 +77,11 @@ public final class Cooper {
      */
     public static void main(final String[] args) {
 
+        // cheat to set system property before initializing logger
+        if (Arrays.asList(args).contains("--verbose")) {
+            System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
+        }
+
         // install a signal handler to exit on SIGPIPE
         sun.misc.Signal.handle(new sun.misc.Signal("PIPE"), new sun.misc.SignalHandler() {
                 @Override
