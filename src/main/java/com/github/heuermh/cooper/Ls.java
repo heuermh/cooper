@@ -49,7 +49,7 @@ import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
  *
  * @author  Michael Heuer
  */
-@Command(name = "ls")
+@Command(name = "ls", aliases={"list"})
 public final class Ls implements Callable<Integer> {
 
     @picocli.CommandLine.Option(
