@@ -35,6 +35,7 @@ $ export PATH=$PATH:`pwd`/target/appassembler/bin
 ### Usage
 
 ```bash
+$ coop --help
 USAGE
   coop [-hV] [COMMAND]
 
