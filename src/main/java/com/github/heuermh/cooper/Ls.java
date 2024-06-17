@@ -26,12 +26,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import picocli.AutoComplete.GenerateCompletion;
-
 import picocli.CommandLine.Command;
-import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.ITypeConverter;
-import picocli.CommandLine.ScopeType;
 
 import software.amazon.awssdk.regions.Region;
 
@@ -39,7 +34,6 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
-import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
 import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
@@ -76,7 +70,7 @@ public final class Ls implements Callable<Integer> {
     private List<String> uris;
 
     /** Logger. */
-    private Logger logger = LoggerFactory.getLogger(Ls.class);
+    private final Logger logger = LoggerFactory.getLogger(Ls.class);
 
     /** Human readable formatter. */
     static final HumanReadableFormatter FORMATTER = new HumanReadableFormatter();
@@ -107,7 +101,7 @@ public final class Ls implements Callable<Integer> {
                 ListObjectsV2Request.Builder requestBuilder = ListObjectsV2Request.builder()
                     .bucket(bucket);
 
-                if (prefix != null && prefix.trim().length() > 0) {
+                if (prefix != null && !prefix.trim().isEmpty()) {
                     requestBuilder = requestBuilder.prefix(prefix);
                 }
 
