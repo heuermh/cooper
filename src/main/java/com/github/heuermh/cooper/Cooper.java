@@ -18,32 +18,12 @@ package com.github.heuermh.cooper;
 import java.util.Arrays;
 import java.util.List;
 
-import java.util.concurrent.Callable;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import picocli.AutoComplete.GenerateCompletion;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ScopeType;
-
-import software.amazon.awssdk.regions.Region;
-
-import software.amazon.awssdk.services.s3.S3Client;
-
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.model.S3Object;
-
-import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
 /**
  * Cooper.

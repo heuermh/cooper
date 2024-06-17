@@ -28,7 +28,10 @@ final class HumanReadableFormatter {
     /** Cached decimal format. */
     private final DecimalFormat decimalFormat;
 
-    /** Multi-byte units, in binary.  See https://en.wikipedia.org/wiki/Byte#Multiple-byte_units.  */
+    /**
+     * Multi-byte units, in binary.
+     * See <a href="https://en.wikipedia.org/wiki/Byte#Multiple-byte_units">Multi-byte units</a>.
+     */
     static final String[] UNITS = new String[] { "Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB" };
 
 
