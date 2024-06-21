@@ -16,7 +16,9 @@
 package com.github.heuermh.cooper;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import java.util.concurrent.Callable;
 
@@ -63,6 +65,9 @@ public final class Ls implements Callable<Integer> {
     @picocli.CommandLine.Option(names = { "--reverse-columns" })
     private boolean reverseColumns;
 
+    @picocli.CommandLine.Option(names = { "--summarize" })
+    private boolean summarize;
+
     @picocli.CommandLine.Option(names = { "--verbose" })
     private boolean verbose;
 
@@ -87,8 +92,16 @@ public final class Ls implements Callable<Integer> {
             .build();
 
         if (showHeader) {
-            System.out.println(reverseColumns ? "size\turi" : "uri\tsize");
+            if (summarize) {
+                System.out.println(reverseColumns ? "size\tcount\turi" : "uri\tcount\tsize");
+            }
+            else {
+                System.out.println(reverseColumns ? "size\turi" : "uri\tsize");
+            }
         }
+
+        Map<String, Integer> counts = new HashMap<String, Integer>();
+        Map<String, Long> sizes = new HashMap<String, Long>();
 
         for (String uri : uris) {
             Matcher m = S3_URI.matcher(uri);
@@ -121,7 +134,14 @@ public final class Ls implements Callable<Integer> {
                         if (s3Path.startsWith(uri)) {
 
                             String size = humanReadable ? FORMATTER.format(content.size()) : String.valueOf(content.size());
-                            System.out.println(reverseColumns ? size + "\t" + s3Path : s3Path + "\t" + size);
+
+                            if (summarize) {
+                                counts.put(uri, counts.containsKey(uri) ? counts.get(uri) + 1 : 1);
+                                sizes.put(uri, sizes.containsKey(uri) ? sizes.get(uri) + content.size() : content.size());
+                            }
+                            else {
+                                System.out.println(reverseColumns ? size + "\t" + s3Path : s3Path + "\t" + size);
+                            }
                         }
                     }
                 }
@@ -130,6 +150,14 @@ public final class Ls implements Callable<Integer> {
                 logger.warn("uri {} not a valid s3 URI", uri);
             }
         }
+        if (summarize) {
+            for (String uri : counts.keySet()) {
+                Integer count = counts.get(uri);
+                String size = humanReadable ? FORMATTER.format(sizes.get(uri)) : String.valueOf(sizes.get(uri));
+                System.out.println(reverseColumns ? size + "\t" + count + "\t" + uri : uri + "\t" + count + "\t" + size);
+            }
+        }
+
         return 0;
     }
 
