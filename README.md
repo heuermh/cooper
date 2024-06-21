@@ -81,6 +81,7 @@ OPTIONS
       --human-readable    Format content sizes in binary multi-byte units.
       --show-header       Show column header row in output.
       --reverse-columns   Reverse the order of output columns.
+      --summarize         Summarize counts and sizes per input URI.
       --verbose           Show additional logging messages.
   -h, --help              Show this help message and exit.
   -V, --version           Print version information and exit.
