@@ -1,0 +1,4 @@
+[
+    { "name" : "com.github.heuermh.cooper.About", "allPublicConstructors" : true },
+    { "name" : "com.github.heuermh.cooper.Cooper", "allPublicMethods" : true }
+]

@@ -1,0 +1,6 @@
+[
+    {
+        "name":"com.github.heuermh.cooper.Cooper",
+        "methods":[{"name":"main","parameterTypes":["java.lang.String[]"] }]
+    }
+]
