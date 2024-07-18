@@ -1,0 +1,17 @@
+title: cooper
+authors:
+  - given-names: Michael
+    family-names: Heuer
+cff-version: 1.2.0
+message: If you use this software, please cite it using the metadata from this file.
+type: software
+abstract: Command line tools for AWS s3.
+keywords:
+  - cli
+  - command-line
+  - command-line-tool
+  - s3
+license: Apache-2.0
+repository-code: https://github.com/heuermh/cooper
+version: cooper-0.2
+date-released: 2024-06-24
