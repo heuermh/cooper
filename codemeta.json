@@ -1,0 +1,38 @@
+{
+  "name": "cooper",
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "applicationCategory": "Data mining",
+  "author": [
+    {
+      "familyName": "Heuer",
+      "id": "_:author_1",
+      "givenName": "Michael",
+      "type": "Person"
+    }
+  ],
+  "codeRepository": "https://github.com/heuermh/cooper",
+  "dateCreated": "2024-02-26",
+  "dateModified": "2024-06-24",
+  "datePublished": "2024-06-24",
+  "description": "Command line tools for AWS s3.",
+  "developmentStatus": "active",
+  "downloadUrl": "https://github.com/heuermh/cooper/releases/tag/cooper-0.2",
+  "issueTracker": "https://github.com/heuermh/cooper/issues",
+  "keywords": [
+    "cli",
+    "command-line",
+    "command-line-tool",
+    "s3"
+  ],
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "operatingSystem": [],
+  "programmingLanguage": [
+    "Java"
+  ],
+  "relatedLink": [],
+  "runtimePlatform": [],
+  "schema:releaseNotes": "## What's Changed\r\n* refactor ls to separate command by @heuermh in https://github.com/heuermh/cooper/pull/10\r\n* Add summarize option to ls by @heuermh in https://github.com/heuermh/cooper/pull/13\r\n\r\n## New Contributors\r\n* @heuermh made their first contribution in https://github.com/heuermh/cooper/pull/10\r\n\r\n**Full Changelog**: https://github.com/heuermh/cooper/compare/cooper-0.1...cooper-0.2",
+  "softwareRequirements": [],
+  "version": "cooper-0.2",
+  "type": "SoftwareSourceCode"
+}
