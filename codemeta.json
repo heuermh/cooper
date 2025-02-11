@@ -5,9 +5,9 @@
   "author": [
     {
       "familyName": "Heuer",
-      "id": "_:author_1",
       "givenName": "Michael",
-      "type": "Person"
+      "type": "Person",
+      "@id": "https://orcid.org/0000-0002-9052-6000",
     }
   ],
   "codeRepository": "https://github.com/heuermh/cooper",
