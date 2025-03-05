@@ -12,7 +12,7 @@
   ],
   "codeRepository": "https://github.com/heuermh/cooper",
   "dateCreated": "2024-02-26",
-  "dateModified": "2024-06-24",
+  "dateModified": "2025-03-05",
   "datePublished": "2024-06-24",
   "description": "Command line tools for AWS s3.",
   "developmentStatus": "active",
@@ -29,6 +29,7 @@
     "Java"
   ],
   "schema:releaseNotes": "## What's Changed\r\n* refactor ls to separate command by @heuermh in https://github.com/heuermh/cooper/pull/10\r\n* Add summarize option to ls by @heuermh in https://github.com/heuermh/cooper/pull/13\r\n\r\n## New Contributors\r\n* @heuermh made their first contribution in https://github.com/heuermh/cooper/pull/10\r\n\r\n**Full Changelog**: https://github.com/heuermh/cooper/compare/cooper-0.1...cooper-0.2",
-  "version": "cooper-0.2",
-  "type": "SoftwareSourceCode"
+  "version": "0.5",
+  "type": "SoftwareSourceCode",
+  "identifier": "10.5281/zenodo.14976258"
 }
