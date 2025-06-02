@@ -52,7 +52,7 @@ public final class Ls implements Callable<Integer> {
         names = { "--region" },
         type = Region.class,
         converter = RegionConverter.class,
-        defaultValue = "us-west-2"
+        defaultValue = "us-east-1"
     )
     private Region region;
 

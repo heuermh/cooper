@@ -77,7 +77,7 @@ PARAMETERS
       <uris>...           One or more s3 URIs.
 
 OPTIONS
-      --region=<region>   AWS region, default us-west-2.
+      --region=<region>   AWS region, default us-east-1.
       --human-readable    Format content sizes in binary multi-byte units.
       --show-header       Show column header row in output.
       --reverse-columns   Reverse the order of output columns.
