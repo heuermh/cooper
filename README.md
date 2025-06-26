@@ -61,8 +61,9 @@ COMMANDS
 At present the only command is `ls`/`list`
 ```bash
 $ coop ls --help
+
 USAGE
-  coop ls [-hV] [--human-readable] [--reverse-columns] [--show-header] [--verbose] [--region=<region>] <uris>...
+  coop ls [-hV] [--anonymous] [--human-readable] [--reverse-columns] [--show-header] [--summarize] [--verbose] [--region=<region>] <uris>...
 
 List s3 paths recursively with content sizes.
 
@@ -78,6 +79,7 @@ PARAMETERS
 
 OPTIONS
       --region=<region>   AWS region, default us-east-1.
+      --anonymous         Use anonymous AWS credentials.
       --human-readable    Format content sizes in binary multi-byte units.
       --show-header       Show column header row in output.
       --reverse-columns   Reverse the order of output columns.
