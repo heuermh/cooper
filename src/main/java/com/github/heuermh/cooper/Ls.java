@@ -30,9 +30,12 @@ import org.slf4j.LoggerFactory;
 
 import picocli.CommandLine.Command;
 
+import software.amazon.awssdk.auth.credentials.AnonymousCredentialsProvider;
+
 import software.amazon.awssdk.regions.Region;
 
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
@@ -55,6 +58,9 @@ public final class Ls implements Callable<Integer> {
         defaultValue = "us-east-1"
     )
     private Region region;
+
+    @picocli.CommandLine.Option(names = { "--anonymous" })
+    private boolean anonymous;
 
     @picocli.CommandLine.Option(names = { "--human-readable" })
     private boolean humanReadable;
@@ -87,9 +93,13 @@ public final class Ls implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
 
-        S3Client s3 = S3Client.builder()
-            .region(region)
-            .build();
+        S3ClientBuilder builder = S3Client.builder()
+            .region(region);
+
+        if (anonymous) {
+            builder = builder.credentialsProvider(AnonymousCredentialsProvider.create());
+        }
+        S3Client s3 = builder.build();
 
         if (showHeader) {
             if (summarize) {
