@@ -20,7 +20,7 @@ https://github.com/aws/aws-cli/issues/5899
 
 Install
 
- * JDK 11 or later, https://openjdk.java.net
+ * JDK 17 or later, https://openjdk.java.net
  * Apache Maven 3.6.3 or later, https://maven.apache.org
 
 To build
