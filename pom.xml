@@ -30,7 +30,7 @@
     <url>https://github.com/heuermh/cooper/issues</url>
   </issueManagement>
   <properties>
-    <awssdk.version>2.32.19</awssdk.version>
+    <awssdk.version>2.33.2</awssdk.version>
     <picocli.version>4.7.7</picocli.version>
     <slf4j.version>1.7.36</slf4j.version>
   </properties>
