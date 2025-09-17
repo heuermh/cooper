@@ -25,6 +25,8 @@ import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Joiner;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +73,9 @@ public final class Ls implements Callable<Integer> {
     @picocli.CommandLine.Option(names = { "--reverse-columns" })
     private boolean reverseColumns;
 
+    @picocli.CommandLine.Option(names = { "--checksums" })
+    private boolean checksums;
+
     @picocli.CommandLine.Option(names = { "--summarize" })
     private boolean summarize;
 
@@ -104,6 +109,9 @@ public final class Ls implements Callable<Integer> {
         if (showHeader) {
             if (summarize) {
                 System.out.println(reverseColumns ? "size\tcount\turi" : "uri\tcount\tsize");
+            }
+            else if (checksums) {
+                System.out.println(reverseColumns ? "size\tchecksum_type\tchecksum_algorithms\te_tag\turi" : "uri\tchecksum_type\tchecksum_algorithms\te_tag\tsize");
             }
             else {
                 System.out.println(reverseColumns ? "size\turi" : "uri\tsize");
@@ -148,6 +156,20 @@ public final class Ls implements Callable<Integer> {
                             if (summarize) {
                                 counts.put(uri, counts.containsKey(uri) ? counts.get(uri) + 1 : 1);
                                 sizes.put(uri, sizes.containsKey(uri) ? sizes.get(uri) + content.size() : content.size());
+                            }
+                            else if (checksums) {
+                                String checksumType = content.checksumTypeAsString();
+                                String checksumAlgorithms = Joiner.on(",").join(content.checksumAlgorithmAsStrings());
+
+                                // why is this value quoted?
+                                String eTag = content.eTag().replace("\"", "");
+
+                                if (reverseColumns) {
+                                    System.out.println(Joiner.on("\t").join(size, checksumType, checksumAlgorithms, eTag, s3Path));
+                                }
+                                else {
+                                    System.out.println(Joiner.on("\t").join(s3Path, checksumType, checksumAlgorithms, eTag, size));
+                                }
                             }
                             else {
                                 System.out.println(reverseColumns ? size + "\t" + s3Path : s3Path + "\t" + size);
