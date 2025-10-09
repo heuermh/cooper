@@ -92,7 +92,7 @@ public final class Ls implements Callable<Integer> {
     static final HumanReadableFormatter FORMATTER = new HumanReadableFormatter();
 
     /** s3 bucket and prefix regex pattern. */
-    static final Pattern S3_URI = Pattern.compile("^s3:\\/\\/([a-zA-Z-]+)\\/*(.*)$");
+    static final Pattern S3_URI = Pattern.compile("^s3:\\/\\/([a-zA-Z0-9.-]+)\\/*(.*)$");
 
 
     @Override
