@@ -36,6 +36,7 @@ $ export PATH=$PATH:`pwd`/target/appassembler/bin
 
 ```bash
 $ coop --help
+
 USAGE
   coop [-hV] [COMMAND]
 
@@ -46,6 +47,7 @@ E.g.
    $ coop ls s3://... | head -n 4
    $ coop ls s3://... | grep -m 10 -e '...'
    $ coop ls s3://... | cut -f 2 | sort -n -r
+   $ coop ls s3://... -o result.zst
 
 
 OPTIONS
@@ -63,7 +65,7 @@ At present the only command is `ls`/`list`
 $ coop ls --help
 
 USAGE
-  coop ls [-hV] [--anonymous] [--human-readable] [--reverse-columns] [--show-header] [--summarize] [--verbose] [--region=<region>] <uris>...
+  coop ls [-hV] [--anonymous] [--bytes] [--checksums] [--human-readable] [--reverse-columns] [--show-header] [--summarize] [--verbose] [-o=<outputPath>] [--region=<region>] <uris>...
 
 List s3 paths recursively with content sizes.
 
@@ -72,19 +74,23 @@ E.g.
    $ coop ls s3://... | head -n 4
    $ coop ls s3://... | grep -m 10 -e '...'
    $ coop ls s3://... | cut -f 2 | sort -n -r
+   $ coop ls s3://... -o result.zst
 
 
 PARAMETERS
-      <uris>...           One or more s3 URIs.
+      <uris>...                    One or more s3 URIs.
 
 OPTIONS
-      --region=<region>   AWS region, default us-east-1.
-      --anonymous         Use anonymous AWS credentials.
-      --human-readable    Format content sizes in binary multi-byte units.
-      --show-header       Show column header row in output.
-      --reverse-columns   Reverse the order of output columns.
-      --summarize         Summarize counts and sizes per input URI.
-      --verbose           Show additional logging messages.
-  -h, --help              Show this help message and exit.
-  -V, --version           Print version information and exit.
+      --region=<region>            AWS region, default us-east-1.
+      --anonymous                  Use anonymous AWS credentials.
+      --bytes                      Format content sizes as bytes.
+      --human-readable             Format content sizes in binary multi-byte units.
+      --show-header                Show column header row in output.
+      --reverse-columns            Reverse the order of output columns.
+      --checksums                  Show checksum values, if available.
+      --summarize                  Summarize counts and sizes per input URI.
+  -o, --output-path=<outputPath>   Output path, optionally compressed (.gz,.bgz,.zst). Default stdout.
+      --verbose                    Show additional logging messages.
+  -h, --help                       Show this help message and exit.
+  -V, --version                    Print version information and exit.
 ```

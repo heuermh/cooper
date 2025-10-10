@@ -31,6 +31,7 @@
   </issueManagement>
   <properties>
     <awssdk.version>2.33.11</awssdk.version>
+    <dsh-compress.version>1.8</dsh-compress.version>
     <picocli.version>4.7.7</picocli.version>
     <slf4j.version>1.7.36</slf4j.version>
   </properties>
@@ -40,6 +41,11 @@
         <groupId>info.picocli</groupId>
         <artifactId>picocli</artifactId>
         <version>${picocli.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.dishevelled</groupId>
+        <artifactId>dsh-compress</artifactId>
+        <version>${dsh-compress.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -75,6 +81,11 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.dishevelled</groupId>
+      <artifactId>dsh-compress</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

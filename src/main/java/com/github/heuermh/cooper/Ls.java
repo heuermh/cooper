@@ -15,6 +15,12 @@
  */
 package com.github.heuermh.cooper;
 
+import static org.dishevelled.compress.Writers.writer;
+
+import java.io.PrintWriter;
+
+import java.nio.file.Path;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 import software.amazon.awssdk.auth.credentials.AnonymousCredentialsProvider;
 
@@ -53,36 +61,42 @@ import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 @Command(name = "ls", aliases={"list"})
 public final class Ls implements Callable<Integer> {
 
-    @picocli.CommandLine.Option(
+    @Option(
         names = { "--region" },
         type = Region.class,
         converter = RegionConverter.class,
-        defaultValue = "us-east-1"
+        defaultValue = "us-east-2"
     )
     private Region region;
 
-    @picocli.CommandLine.Option(names = { "--anonymous" })
+    @Option(names = { "--anonymous" })
     private boolean anonymous;
 
-    @picocli.CommandLine.Option(names = { "--human-readable" })
+    @Option(names = { "--bytes" })
+    private boolean bytes;
+
+    @Option(names = { "--human-readable" })
     private boolean humanReadable;
 
-    @picocli.CommandLine.Option(names = { "--show-header" })
+    @Option(names = { "--show-header" })
     private boolean showHeader;
 
-    @picocli.CommandLine.Option(names = { "--reverse-columns" })
+    @Option(names = { "--reverse-columns" })
     private boolean reverseColumns;
 
-    @picocli.CommandLine.Option(names = { "--checksums" })
+    @Option(names = { "--checksums" })
     private boolean checksums;
 
-    @picocli.CommandLine.Option(names = { "--summarize" })
+    @Option(names = { "--summarize" })
     private boolean summarize;
 
-    @picocli.CommandLine.Option(names = { "--verbose" })
+    @Option(names = { "--output-path", "-o" })
+    private Path outputPath;
+
+    @Option(names = { "--verbose" })
     private boolean verbose;
 
-    @picocli.CommandLine.Parameters(index = "0..*", arity = "1..*", descriptionKey = "uris")
+    @Parameters(index = "0..*", arity = "1..*", descriptionKey = "uris")
     private List<String> uris;
 
     /** Logger. */
@@ -106,87 +120,148 @@ public final class Ls implements Callable<Integer> {
         }
         S3Client s3 = builder.build();
 
-        if (showHeader) {
-            if (summarize) {
-                System.out.println(reverseColumns ? "size\tcount\turi" : "uri\tcount\tsize");
-            }
-            else if (checksums) {
-                System.out.println(reverseColumns ? "size\tchecksum_type\tchecksum_algorithms\te_tag\turi" : "uri\tchecksum_type\tchecksum_algorithms\te_tag\tsize");
-            }
-            else {
-                System.out.println(reverseColumns ? "size\turi" : "uri\tsize");
-            }
+        // warn if --summarize and --checksums
+        if (summarize && checksums) {
+            logger.warn("--summarize does not show checksums, even if --checksums provided");
         }
 
-        Map<String, Integer> counts = new HashMap<String, Integer>();
-        Map<String, Long> sizes = new HashMap<String, Long>();
+        try (PrintWriter writer = writer(outputPath)) {
 
-        for (String uri : uris) {
-            Matcher m = S3_URI.matcher(uri);
-            if (m.matches()) {
-                String bucket = m.group(1);
-                String prefix = m.group(2);
-                
-                logger.info("valid uri={} bucket={} prefix={}", uri, bucket, prefix);
-
-                ListObjectsV2Request.Builder requestBuilder = ListObjectsV2Request.builder()
-                    .bucket(bucket);
-
-                if (prefix != null && !prefix.trim().isEmpty()) {
-                    requestBuilder = requestBuilder.prefix(prefix);
+            // show header, if --show-header
+            if (showHeader) {
+                if (summarize) {
+                    if (bytes && humanReadable) {
+                        writer.println(reverseColumns ? "bytes\thuman_readable\tcount\turi" : "uri\tcount\tbytes\thuman_readable");
+                    }
+                    else {
+                        writer.println(reverseColumns ? "size\tcount\turi" : "uri\tcount\tsize");
+                    }
                 }
+                else if (checksums) {
+                    if (bytes && humanReadable) {
+                        writer.println(reverseColumns ? "bytes\thuman_readable\tchecksum_type\tchecksum_algorithms\te_tag\turi" : "uri\tchecksum_type\tchecksum_algorithms\te_tag\tbytes\thuman_readable");
+                    }
+                    else {
+                        writer.println(reverseColumns ? "size\tchecksum_type\tchecksum_algorithms\te_tag\turi" : "uri\tchecksum_type\tchecksum_algorithms\te_tag\tsize");
+                    }
+                }
+                else {
+                    if (bytes && humanReadable) {
+                        writer.println(reverseColumns ? "bytes\thuman_readable\turi" : "uri\tbytes\thuman_readable");
+                    }
+                    else {
+                        writer.println(reverseColumns ? "size\turi" : "uri\tsize");
+                    }
+                }
+            }
 
-                ListObjectsV2Request request = requestBuilder.build();
+            Joiner joiner = Joiner.on("\t");
+            Map<String, Integer> counts = new HashMap<String, Integer>();
+            Map<String, Long> sizes = new HashMap<String, Long>();
 
-                logger.info("ListObjectsV2 request={}", request.toString());
+            for (String uri : uris) {
+                Matcher m = S3_URI.matcher(uri);
+                if (m.matches()) {
+                    String bucket = m.group(1);
+                    String prefix = m.group(2);
 
-                ListObjectsV2Iterable responses = s3.listObjectsV2Paginator(request);
-                for (ListObjectsV2Response response : responses) {
+                    logger.info("valid uri={} bucket={} prefix={}", uri, bucket, prefix);
 
-                    logger.info("ListObjectsV2 response={}", response.toString());
+                    ListObjectsV2Request.Builder requestBuilder = ListObjectsV2Request.builder().bucket(bucket);
 
-                    for (S3Object content : response.contents()) {
+                    if (prefix != null && !prefix.trim().isEmpty()) {
+                        requestBuilder = requestBuilder.prefix(prefix);
+                    }
 
-                        String s3Path = "s3://" + bucket + "/" + content.key();
+                    ListObjectsV2Request request = requestBuilder.build();
+                    logger.info("ListObjectsV2 request={}", request.toString());
 
-                        if (s3Path.startsWith(uri)) {
+                    ListObjectsV2Iterable responses = s3.listObjectsV2Paginator(request);
+                    for (ListObjectsV2Response response : responses) {
 
-                            String size = humanReadable ? FORMATTER.format(content.size()) : String.valueOf(content.size());
+                        logger.info("ListObjectsV2 response={}", response.toString());
 
-                            if (summarize) {
-                                counts.put(uri, counts.containsKey(uri) ? counts.get(uri) + 1 : 1);
-                                sizes.put(uri, sizes.containsKey(uri) ? sizes.get(uri) + content.size() : content.size());
-                            }
-                            else if (checksums) {
-                                String checksumType = content.checksumTypeAsString();
-                                String checksumAlgorithms = Joiner.on(",").join(content.checksumAlgorithmAsStrings());
+                        for (S3Object content : response.contents()) {
+                            String s3Path = "s3://" + bucket + "/" + content.key();
 
-                                // why is this value quoted?
-                                String eTag = content.eTag().replace("\"", "");
+                            if (s3Path.startsWith(uri)) {
+                                String byteSize = String.valueOf(content.size());
+                                String humanReadableSize = FORMATTER.format(content.size());
 
-                                if (reverseColumns) {
-                                    System.out.println(Joiner.on("\t").join(size, checksumType, checksumAlgorithms, eTag, s3Path));
+                                if (summarize) {
+                                    counts.put(uri, counts.containsKey(uri) ? counts.get(uri) + 1 : 1);
+                                    sizes.put(uri, sizes.containsKey(uri) ? sizes.get(uri) + content.size() : content.size());
+                                }
+                                else if (checksums) {
+                                    String checksumType = content.checksumTypeAsString();
+                                    String checksumAlgorithms = Joiner.on(",").join(content.checksumAlgorithmAsStrings());
+
+                                    // why is this value quoted?
+                                    String eTag = content.eTag().replace("\"", "");
+
+                                    // format per --bytes, --human-readable, --reverse-columns
+                                    if (bytes && humanReadable) {
+                                        if (reverseColumns) {
+                                            writer.println(joiner.join(byteSize, humanReadableSize, checksumType, checksumAlgorithms, eTag, s3Path));
+                                        }
+                                        else {
+                                            writer.println(joiner.join(s3Path, checksumType, checksumAlgorithms, eTag, byteSize, humanReadableSize));
+                                        }
+                                    }
+                                    else if (humanReadable) {
+                                        if (reverseColumns) {
+                                            writer.println(joiner.join(humanReadableSize, checksumType, checksumAlgorithms, eTag, s3Path));
+                                        }
+                                        else {
+                                            writer.println(joiner.join(s3Path, checksumType, checksumAlgorithms, eTag, humanReadableSize));
+                                        }
+                                    }
+                                    else {
+                                        if (reverseColumns) {
+                                            writer.println(joiner.join(byteSize, checksumType, checksumAlgorithms, eTag, s3Path));
+                                        }
+                                        else {
+                                            writer.println(joiner.join(s3Path, checksumType, checksumAlgorithms, eTag, byteSize));
+                                        }
+                                    }
                                 }
                                 else {
-                                    System.out.println(Joiner.on("\t").join(s3Path, checksumType, checksumAlgorithms, eTag, size));
+                                    // format per --bytes, --human-readable, --reverse-columns
+                                    if (bytes && humanReadable) {
+                                        writer.println(reverseColumns ? joiner.join(byteSize, humanReadableSize, s3Path) : joiner.join(s3Path, byteSize, humanReadableSize));
+                                    }
+                                    else if (humanReadable) {
+                                        writer.println(reverseColumns ? joiner.join(humanReadableSize, s3Path) : joiner.join(s3Path, humanReadableSize));
+                                    }
+                                    else {
+                                        writer.println(reverseColumns ? joiner.join(byteSize, s3Path) : joiner.join(s3Path, byteSize));
+                                    }
                                 }
-                            }
-                            else {
-                                System.out.println(reverseColumns ? size + "\t" + s3Path : s3Path + "\t" + size);
                             }
                         }
                     }
                 }
+                else {
+                    logger.warn("uri {} not a valid s3 URI", uri);
+                }
             }
-            else {
-                logger.warn("uri {} not a valid s3 URI", uri);
-            }
-        }
-        if (summarize) {
-            for (String uri : counts.keySet()) {
-                Integer count = counts.get(uri);
-                String size = humanReadable ? FORMATTER.format(sizes.get(uri)) : String.valueOf(sizes.get(uri));
-                System.out.println(reverseColumns ? size + "\t" + count + "\t" + uri : uri + "\t" + count + "\t" + size);
+            if (summarize) {
+                for (String uri : counts.keySet()) {
+                    Integer count = counts.get(uri);
+                    String byteSize = String.valueOf(sizes.get(uri));
+                    String humanReadableSize = FORMATTER.format(sizes.get(uri));
+
+                    // format per --bytes, --human-readable, --reverse-columns
+                    if (bytes && humanReadable) {
+                        writer.println(reverseColumns ? joiner.join(byteSize, humanReadableSize, count, uri) : joiner.join(uri, count, byteSize, humanReadableSize));
+                    }
+                    else if (humanReadable) {
+                        writer.println(reverseColumns ? joiner.join(humanReadableSize, count, uri) : joiner.join(uri, count, humanReadableSize));
+                    }
+                    else {
+                        writer.println(reverseColumns ? joiner.join(byteSize, count, uri) : joiner.join(uri, count, byteSize));
+                    }
+                }
             }
         }
 
