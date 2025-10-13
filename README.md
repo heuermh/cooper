@@ -81,7 +81,7 @@ PARAMETERS
       <uris>...                    One or more s3 URIs.
 
 OPTIONS
-      --region=<region>            AWS region, default us-east-1.
+      --region=<region>            AWS region, default us-east-2.
       --anonymous                  Use anonymous AWS credentials.
       --bytes                      Format content sizes as bytes.
       --human-readable             Format content sizes in binary multi-byte units.
