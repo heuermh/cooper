@@ -5,7 +5,11 @@
   <parent>
     <groupId>org.dishevelled</groupId>
     <artifactId>dsh-parent</artifactId>
+<<<<<<< HEAD
     <version>56-SNAPSHOT</version>
+=======
+    <version>56</version>
+>>>>>>> 4264432 (update awssdk dependency version to 2.28.1, dsh-compress to 1.8.1)
   </parent>
   <groupId>com.github.heuermh.cooper</groupId>
   <artifactId>cooper</artifactId>
@@ -30,8 +34,8 @@
     <url>https://github.com/heuermh/cooper/issues</url>
   </issueManagement>
   <properties>
-    <awssdk.version>2.37.5</awssdk.version>
-    <dsh-compress.version>1.8</dsh-compress.version>
+    <awssdk.version>2.38.1</awssdk.version>
+    <dsh-compress.version>1.8.1</dsh-compress.version>
     <picocli.version>4.7.7</picocli.version>
     <slf4j.version>1.7.36</slf4j.version>
   </properties>
